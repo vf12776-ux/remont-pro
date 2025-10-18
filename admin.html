@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>РемонтПро - Панель управления</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>⚙️ Панель управления ценами</h1>
+    <p>Настройте расценки для калькулятора</p>
+    <div class="header-links">
+      <a href="index.html" class="back-link">← Вернуться к калькулятору</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="admin-container">
+      <div class="price-section">
+        <h2>🏗️ Основные услуги</h2>
+        
+        <div class="price-group">
+          <label>
+            <span>Базовая стоимость ремонта (₽/м²)</span>
+            <input type="number" id="price-base" min="0" step="100">
+            <small>Стоимость черновых работ за квадратный метр</small>
+          </label>
+        </div>
+
+        <div class="price-group">
+          <label>
+            <span>Покраска стен (₽/м²)</span>
+            <input type="number" id="price-painting" min="0" step="50">
+            <small>Стандартная покраска в два слоя</small>
+          </label>
+        </div>
+
+        <div class="price-group">
+          <label>
+            <span>Укладка пола (₽/м²)</span>
+            <input type="number" id="price-floor" min="0" step="100">
+            <small>Укладка ламината/линолеума</small>
+          </label>
+        </div>
+
+        <div class="price-group">
+          <label>
+            <span>Сантехника (фикс. стоимость)</span>
+            <input type="number" id="price-plumbing" min="0" step="1000">
+            <small>Комплекс сантехнических работ</small>
+          </label>
+        </div>
+      </div>
+
+      <div class="price-section">
+        <h2>📦 Дополнительные услуги</h2>
+        
+        <div class="price-group">
+          <label>
+            <span>Грунтовка (₽/м²)</span>
+            <input type="number" id="price-primer" min="0" step="10">
+          </label>
+        </div>
+
+        <div class="price-group">
+          <label>
+            <span>Укрывание поверхностей (₽/м²)</span>
+            <input type="number" id="price-protection" min="0" step="10">
+          </label>
+        </div>
+
+        <div class="price-group">
+          <label>
+            <span>Уборка после ремонта</span>
+            <input type="number" id="price-cleaning" min="0" step="500">
+          </label>
+        </div>
+
+        <div class="price-group">
+          <label>
+            <span>Вынос мусора</span>
+            <input type="number" id="price-garbage" min="0" step="500">
+          </label>
+        </div>
+      </div>
+
+      <div class="price-section">
+        <h2>⚡ Наценки за срочность</h2>
+        
+        <div class="price-group">
+          <label>
+            <span>Приоритетная (+%)</span>
+            <input type="number" id="multiplier-priority" min="0" max="100" step="5" value="20">
+          </label>
+        </div>
+
+        <div class="price-group">
+          <label>
+            <span>Срочная (+%)</span>
+            <input type="number" id="multiplier-urgent" min="0" max="200" step="5" value="50">
+          </label>
+        </div>
+      </div>
+
+      <div class="admin-actions">
+        <button id="save-prices" class="btn-primary">💾 Сохранить все цены</button>
+        <button id="reset-prices" class="btn-secondary">🔄 Сбросить к стандартным</button>
+        <button id="test-calc" class="btn-secondary">🧮 Протестировать расчёт</button>
+      </div>
+
+      <div class="preview" id="preview" style="display: none;">
+        <h3>Пример расчёта (50м² + покраска):</h3>
+        <div id="preview-result"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>💡 Изменения вступят в силу сразу после сохранения</p>
+  </footer>
+
+  <script src="admin.js"></script>
+</body>
+</html>
