@@ -1,7 +1,7 @@
 {
   "name": "РемонтПро",
-  "short_name": "РемонтПро",
-  "start_url": "/",
+  "short_name": "РемонтПро", 
+  "start_url": "/remont-pro/",
   "display": "fullscreen",
   "background_color": "#000000",
   "theme_color": "#000000",
