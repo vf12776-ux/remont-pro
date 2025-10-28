@@ -12,6 +12,62 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById(`step-${currentStep}`).classList.add('active');
   progressBar.style.width = `${(currentStep / 5) * 100}%`;
 
+  // ===== СИСТЕМА МАСТЕРОВ =====
+  function loadPricesForCalculation() {
+    const currentMaster = localStorage.getItem('currentMaster');
+    if (currentMaster) {
+      try {
+        const master = JSON.parse(currentMaster);
+        const prices = localStorage.getItem(`repairPrices_${master.pin}`);
+        const multipliers = localStorage.getItem(`urgencyMultipliers_${master.pin}`);
+        
+        if (prices && multipliers) {
+          return {
+            prices: JSON.parse(prices),
+            multipliers: JSON.parse(multipliers),
+            masterName: master.name
+          };
+        }
+      } catch (e) {
+        console.error('Ошибка загрузки цен мастера:', e);
+      }
+    }
+    
+    // Стандартные цены
+    return {
+      prices: {
+        base: 1500,
+        painting: 300,
+        floor: 800,
+        plumbing: 15000,
+        primer: 50,
+        protection: 30,
+        cleaning: 5000,
+        garbage: 3000
+      },
+      multipliers: { priority: 1.2, urgent: 1.5 },
+      masterName: null
+    };
+  }
+
+  function updateMasterInfo() {
+    const masterInfo = document.getElementById('master-info');
+    if (!masterInfo) return;
+    
+    const { masterName } = loadPricesForCalculation();
+    if (masterName) {
+      masterInfo.innerHTML = `👨‍🔧 Расчет по ценам мастера: <strong>${masterName}</strong>`;
+      masterInfo.style.display = 'block';
+    } else {
+      masterInfo.innerHTML = '💡 Расчет по стандартным ценам';
+      masterInfo.style.display = 'block';
+    }
+  }
+
+  // Инициализация информации о мастере
+  updateMasterInfo();
+
+  // ===== ОСНОВНАЯ ЛОГИКА ФОРМЫ =====
   // Логика кнопок "Далее"
   nextButtons.forEach(button => {
     button.addEventListener('click', () => {
@@ -39,6 +95,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Логика кнопки "Оформить заказ"
   submitButton.addEventListener('click', () => {
     if (validateStep(currentStep)) {
+      const { masterName } = loadPricesForCalculation();
+      
       fetch('https://jsonplaceholder.typicode.com/posts', {
         method: 'POST',
         body: JSON.stringify({
@@ -51,7 +109,9 @@ document.addEventListener('DOMContentLoaded', () => {
           date: document.querySelector('#date').value,
           time: document.querySelector('#time').value,
           name: document.querySelector('#name').value,
-          phone: document.querySelector('#phone').value
+          phone: document.querySelector('#phone').value,
+          master: masterName || 'Стандартные цены',
+          totalCost: document.getElementById('final-cost').textContent
         }),
         headers: { 'Content-Type': 'application/json' }
       })
@@ -63,7 +123,8 @@ document.addEventListener('DOMContentLoaded', () => {
           localStorage.setItem('lastOrder', JSON.stringify({
             premise: document.querySelector('input[name="premise-type"]:checked')?.value,
             area: document.querySelector('#area').value,
-            cost: document.getElementById('final-cost').textContent
+            cost: document.getElementById('final-cost').textContent,
+            master: masterName || 'Стандартные цены'
           }));
         })
         .catch(() => alert('Ошибка при отправке!'));
@@ -120,41 +181,17 @@ document.addEventListener('DOMContentLoaded', () => {
     return true;
   }
 
-  // Загрузка цен из localStorage
-  function getPrices() {
-    const saved = localStorage.getItem('repairPrices');
-    if (saved) {
-      return JSON.parse(saved);
-    }
-    // Стандартные цены
-    return {
-      base: 1500,
-      painting: 300,
-      floor: 800,
-      plumbing: 15000,
-      primer: 50,
-      protection: 30,
-      cleaning: 5000,
-      garbage: 3000
-    };
-  }
-
-  function getMultipliers() {
-    const saved = localStorage.getItem('urgencyMultipliers');
-    return saved ? JSON.parse(saved) : { priority: 1.2, urgent: 1.5 };
-  }
-
-  // ПРАВИЛЬНЫЙ подсчёт стоимости с детализацией
+  // ПРАВИЛЬНЫЙ подсчёт стоимости с детализацией (ОБНОВЛЕННЫЙ)
   function updateCost() {
     const area = parseFloat(document.querySelector('#area').value) || 0;
     const services = document.querySelectorAll('input[name="services"]:checked');
     const urgency = document.querySelector('input[name="urgency"]:checked')?.value || 'normal';
     
-    const PRICES = getPrices();
-    const MULTIPLIERS = getMultipliers();
+    // Загружаем цены с учетом мастера
+    const { prices: PRICES, multipliers: MULTIPLIERS } = loadPricesForCalculation();
     
-    // Реалистичные цены
-    let basePrice = area * PRICES.base; // 1500 ₽/м² базовая стоимость
+    // Базовая стоимость
+    let basePrice = area * PRICES.base;
     
     // Стоимость основных услуг
     let servicesPrice = 0;
@@ -163,27 +200,35 @@ document.addEventListener('DOMContentLoaded', () => {
         case 'Покраска стен':
           const paintingType = document.querySelector('input[name="painting-type"]:checked');
           const paintingMultiplier = paintingType ? parseFloat(paintingType.dataset.multiplier) : 1;
-          servicesPrice += area * PRICES.painting * paintingMultiplier; // 300 ₽/м² × множитель
+          servicesPrice += area * PRICES.painting * paintingMultiplier;
           break;
         case 'Укладка пола':
-          servicesPrice += area * PRICES.floor; // 800 ₽/м²
+          servicesPrice += area * PRICES.floor;
           break;
         case 'Сантехника':
-          servicesPrice += PRICES.plumbing; // Фиксированная стоимость
+          servicesPrice += PRICES.plumbing;
           break;
       }
     });
     
-    // Дополнительные услуги
+    // Дополнительные услуги (ОБНОВЛЕНО - используем цены мастера)
     let additionalPrice = 0;
     document.querySelectorAll('input[name="additional"]:checked').forEach(additional => {
-      const price = parseFloat(additional.dataset.price);
-      if (additional.value === 'primer' || additional.value === 'protection') {
-        // Услуги с ценой за м²
-        additionalPrice += area * price;
-      } else {
-        // Фиксированная стоимость
-        additionalPrice += price;
+      const serviceType = additional.value;
+      
+      switch(serviceType) {
+        case 'primer':
+          additionalPrice += area * PRICES.primer;
+          break;
+        case 'protection':
+          additionalPrice += area * PRICES.protection;
+          break;
+        case 'cleaning':
+          additionalPrice += PRICES.cleaning;
+          break;
+        case 'garbage':
+          additionalPrice += PRICES.garbage;
+          break;
       }
     });
     
@@ -208,6 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const urgency = document.querySelector('input[name="urgency"]:checked')?.value || 'normal';
     const date = document.querySelector('#date').value;
     const time = document.querySelector('#time').value;
+    const { masterName } = loadPricesForCalculation();
     
     let paintingDetail = '';
     if (services.includes('Покраска стен') && paintingType) {
@@ -216,7 +262,13 @@ document.addEventListener('DOMContentLoaded', () => {
                       ' (покраска обоев)';
     }
     
+    let masterInfo = '';
+    if (masterName) {
+      masterInfo = `<p><strong>Мастер:</strong> ${masterName}</p>`;
+    }
+    
     document.getElementById('summary-content').innerHTML = `
+      ${masterInfo}
       <p>Тип помещения: ${premise}</p>
       <p>Площадь: ${area} м²</p>
       <p>Услуги: ${services.map((s, i) => s + (i === services.indexOf('Покраска стен') ? paintingDetail : '')).join(', ') || 'Не выбрано'}</p>
