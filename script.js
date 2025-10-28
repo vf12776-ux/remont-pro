@@ -1,5 +1,29 @@
+// ===== DARK MODE FUNCTIONALITY =====
+function initializeDarkMode() {
+  const darkModeToggle = document.getElementById('dark-mode-toggle');
+  const savedTheme = localStorage.getItem('darkMode');
+  
+  // Устанавливаем начальную тему
+  if (savedTheme === 'true') {
+    document.body.classList.add('dark-mode');
+    darkModeToggle.checked = true;
+  }
+  
+  // Обработчик переключения темы
+  darkModeToggle.addEventListener('change', (e) => {
+    if (e.target.checked) {
+      document.body.classList.add('dark-mode');
+      localStorage.setItem('darkMode', 'true');
+    } else {
+      document.body.classList.remove('dark-mode');
+      localStorage.setItem('darkMode', 'false');
+    }
+  });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   // Инициализация
+  initializeDarkMode();
   updateMasterInfo();
   updatePriceDisplay();
   
@@ -225,16 +249,3 @@ function debounce(func, wait) {
     timeout = setTimeout(later, wait);
   };
 }
-
-// Добавляем CSS для анимаций
-const style = document.createElement('style');
-style.textContent = `
-  .breakdown-total {
-    border-top: 2px solid rgba(255, 255, 255, 0.3) !important;
-    font-weight: bold;
-    font-size: 1.1em;
-    margin-top: 10px;
-    padding-top: 10px;
-  }
-`;
-document.head.appendChild(style);
