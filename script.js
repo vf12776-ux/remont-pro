@@ -1,3 +1,4 @@
+
 // ===== DARK MODE FUNCTIONALITY =====
 function initializeDarkMode() {
   const darkModeToggle = document.getElementById('dark-mode-toggle');
@@ -25,7 +26,6 @@ document.addEventListener('DOMContentLoaded', function() {
   // Инициализация
   initializeDarkMode();
   updateMasterInfo();
-  updatePriceDisplay();
   
   // Обработчики событий
   document.getElementById('calculate-btn').addEventListener('click', calculateTotal);
@@ -65,9 +65,9 @@ function loadPricesForCalculation() {
       painting: 300,
       floor: 800,
       plumbing: 15000,
-      plaster: 400,      // НОВАЯ УСЛУГА
-      putty: 250,        // НОВАЯ УСЛУГА
-      demolition: 350,   // НОВАЯ УСЛУГА
+      plaster: 400,
+      putty: 250,
+      demolition: 350,
       primer: 50,
       protection: 30,
       cleaning: 5000,
@@ -84,37 +84,12 @@ function updateMasterInfo() {
   
   const { masterName } = loadPricesForCalculation();
   if (masterName) {
-    masterInfo.textContent = `Цены мастера: ${masterName}`;
+    masterInfo.textContent = `Расчет по ценам мастера: ${masterName}`;
     masterInfo.style.display = 'block';
   } else {
-    masterInfo.textContent = 'Стандартные цены';
+    masterInfo.textContent = 'Расчет по стандартным ценам';
     masterInfo.style.display = 'block';
   }
-}
-
-function updatePriceDisplay() {
-  const { prices } = loadPricesForCalculation();
-  
-  // Обновляем отображение цен в интерфейсе
-  const priceElements = {
-    'price-painting': `${prices.painting} ₽/м²`,
-    'price-floor': `${prices.floor} ₽/м²`,
-    'price-plumbing': `${prices.plumbing.toLocaleString()} ₽`,
-    'price-plaster': `${prices.plaster} ₽/м²`,      // НОВАЯ УСЛУГА
-    'price-putty': `${prices.putty} ₽/м²`,          // НОВАЯ УСЛУГА
-    'price-demolition': `${prices.demolition} ₽/м²`, // НОВАЯ УСЛУГА
-    'price-primer': `${prices.primer} ₽/м²`,
-    'price-protection': `${prices.protection} ₽/м²`,
-    'price-cleaning': `${prices.cleaning.toLocaleString()} ₽`,
-    'price-garbage': `${prices.garbage.toLocaleString()} ₽`
-  };
-  
-  Object.entries(priceElements).forEach(([id, text]) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.textContent = text;
-    }
-  });
 }
 
 // ===== РАСЧЕТ СТОИМОСТИ =====
@@ -141,9 +116,9 @@ function calculateTotal() {
     { id: 'service-painting', name: 'Покраска стен', price: prices.painting, unit: 'м²' },
     { id: 'service-floor', name: 'Укладка пола', price: prices.floor, unit: 'м²' },
     { id: 'service-plumbing', name: 'Сантехнические работы', price: prices.plumbing, unit: 'фикс' },
-    { id: 'service-plaster', name: 'Штукатурка стен', price: prices.plaster, unit: 'м²' },      // НОВАЯ УСЛУГА
-    { id: 'service-putty', name: 'Шпаклевка стен', price: prices.putty, unit: 'м²' },          // НОВАЯ УСЛУГА
-    { id: 'service-demolition', name: 'Демонтаж', price: prices.demolition, unit: 'м²' }       // НОВАЯ УСЛУГА
+    { id: 'service-plaster', name: 'Штукатурка стен', price: prices.plaster, unit: 'м²' },
+    { id: 'service-putty', name: 'Шпаклевка стен', price: prices.putty, unit: 'м²' },
+    { id: 'service-demolition', name: 'Демонтаж', price: prices.demolition, unit: 'м²' }
   ];
   
   services.forEach(service => {
