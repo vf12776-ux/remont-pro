@@ -1,14 +1,21 @@
 {
   "name": "РемонтПро",
-  "short_name": "РемонтПро", 
-  "start_url": "/remont-pro/",
-  "display": "fullscreen",
-  "background_color": "#000000",
-  "theme_color": "#000000",
+  "short_name": "РемонтПро",
+  "description": "Профессиональный расчет стоимости ремонта",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#6366f1",
+  "orientation": "portrait-primary",
   "icons": [
     {
       "src": "favicon.png",
       "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "512x512",
       "type": "image/png"
     }
   ]
