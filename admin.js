@@ -1,4 +1,30 @@
+// ===== DARK MODE FUNCTIONALITY =====
+function initializeDarkMode() {
+  const darkModeToggle = document.getElementById('dark-mode-toggle');
+  if (!darkModeToggle) return;
+  
+  const savedTheme = localStorage.getItem('darkMode');
+  
+  // Устанавливаем начальную тему
+  if (savedTheme === 'true') {
+    document.body.classList.add('dark-mode');
+    darkModeToggle.checked = true;
+  }
+  
+  // Обработчик переключения темы
+  darkModeToggle.addEventListener('change', (e) => {
+    if (e.target.checked) {
+      document.body.classList.add('dark-mode');
+      localStorage.setItem('darkMode', 'true');
+    } else {
+      document.body.classList.remove('dark-mode');
+      localStorage.setItem('darkMode', 'false');
+    }
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  initializeDarkMode();
   checkAuthStatus();
   
   // Обработчики авторизации
