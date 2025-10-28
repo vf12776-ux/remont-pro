@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -32,7 +33,7 @@
       <div class="input-section">
         <div class="input-group">
           <label for="area">📐 Площадь помещения (м²)</label>
-          <input type="number" id="area" min="1" placeholder="Например: 50">
+          <input type="number" id="area" min="1" placeholder="Введите площадь в м²" required>
         </div>
         
         <div class="input-group">
@@ -54,7 +55,6 @@
               <input type="checkbox" id="service-painting" data-service="painting">
               <label for="service-painting">🎨 Покраска стен</label>
             </div>
-            <span class="service-price" id="price-painting">-</span>
           </div>
           
           <div class="service-item">
@@ -62,7 +62,6 @@
               <input type="checkbox" id="service-floor" data-service="floor">
               <label for="service-floor">🪚 Укладка пола</label>
             </div>
-            <span class="service-price" id="price-floor">-</span>
           </div>
           
           <div class="service-item">
@@ -70,16 +69,13 @@
               <input type="checkbox" id="service-plumbing" data-service="plumbing">
               <label for="service-plumbing">🚿 Сантехника</label>
             </div>
-            <span class="service-price" id="price-plumbing">-</span>
           </div>
 
-          <!-- Новые услуги -->
           <div class="service-item">
             <div class="service-info">
               <input type="checkbox" id="service-plaster" data-service="plaster">
               <label for="service-plaster">🧱 Штукатурка стен</label>
             </div>
-            <span class="service-price" id="price-plaster">-</span>
           </div>
 
           <div class="service-item">
@@ -87,7 +83,6 @@
               <input type="checkbox" id="service-putty" data-service="putty">
               <label for="service-putty">🪛 Шпаклевка стен</label>
             </div>
-            <span class="service-price" id="price-putty">-</span>
           </div>
 
           <div class="service-item">
@@ -95,7 +90,6 @@
               <input type="checkbox" id="service-demolition" data-service="demolition">
               <label for="service-demolition">🔨 Демонтаж</label>
             </div>
-            <span class="service-price" id="price-demolition">-</span>
           </div>
         </div>
 
@@ -106,7 +100,6 @@
               <input type="checkbox" id="service-primer">
               <label for="service-primer">🧴 Грунтовка поверхностей</label>
             </div>
-            <span class="service-price" id="price-primer">-</span>
           </div>
           
           <div class="service-item">
@@ -114,7 +107,6 @@
               <input type="checkbox" id="service-protection">
               <label for="service-protection">📦 Укрывание поверхностей</label>
             </div>
-            <span class="service-price" id="price-protection">-</span>
           </div>
           
           <div class="service-item">
@@ -122,7 +114,6 @@
               <input type="checkbox" id="service-cleaning">
               <label for="service-cleaning">🧹 Уборка после ремонта</label>
             </div>
-            <span class="service-price" id="price-cleaning">-</span>
           </div>
           
           <div class="service-item">
@@ -130,7 +121,6 @@
               <input type="checkbox" id="service-garbage">
               <label for="service-garbage">🗑️ Вынос мусора</label>
             </div>
-            <span class="service-price" id="price-garbage">-</span>
           </div>
         </div>
       </div>
