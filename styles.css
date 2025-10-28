@@ -1,489 +1,65 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* Стили для секции авторизации */
+.auth-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  padding: 20px;
 }
 
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  line-height: 1.6;
-  color: #333;
-  background: #f8f9fa;
-  transition: all 0.3s ease;
-}
-
-body.dark-mode {
-  background: #1a1a1a;
-  color: #f0f0f0;
-}
-
-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  text-align: center;
-  padding: 2rem 1rem;
+.auth-form {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-header h1 {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
-}
-
-header p {
-  font-size: 1.1rem;
-  opacity: 0.9;
-  margin-bottom: 1rem;
-}
-
-.header-links {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 15px;
-}
-
-.admin-link {
-  color: white;
-  text-decoration: none;
-  font-size: 14px;
-  padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 20px;
-  transition: all 0.3s ease;
-}
-
-.admin-link:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: translateY(-2px);
-}
-
-main {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-}
-
-.progress-bar {
-  height: 6px;
-  background: linear-gradient(90deg, #667eea, #764ba2);
-  margin-bottom: 2rem;
-  border-radius: 3px;
-  transition: width 0.3s ease;
-}
-
-.step {
-  display: none;
-  background: white;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  margin-bottom: 1rem;
-}
-
-body.dark-mode .step {
-  background: #2d2d2d;
-  color: #f0f0f0;
-}
-
-.step.active {
-  display: block;
-  animation: fadeIn 0.5s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-h2 {
-  color: #667eea;
-  margin-bottom: 1.5rem;
-  font-size: 1.8rem;
-}
-
-body.dark-mode h2 {
-  color: #8a9eff;
-}
-
-.options {
-  display: grid;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.option {
-  display: flex;
-  align-items: center;
-  padding: 1rem;
-  background: #f8f9fa;
-  border: 2px solid #e9ecef;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-body.dark-mode .option {
-  background: #3d3d3d;
-  border-color: #555;
-}
-
-.option:hover {
-  border-color: #667eea;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
-}
-
-.option input {
-  margin-right: 1rem;
-}
-
-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-}
-
-input[type="number"],
-input[type="text"],
-input[type="tel"],
-input[type="email"],
-input[type="date"],
-select {
+  max-width: 400px;
   width: 100%;
-  padding: 0.75rem;
-  border: 2px solid #e9ecef;
-  border-radius: 6px;
-  font-size: 1rem;
-  transition: border-color 0.3s ease;
-  margin-bottom: 1.5rem;
-}
-
-body.dark-mode input,
-body.dark-mode select {
-  background: #3d3d3d;
-  border-color: #555;
-  color: #f0f0f0;
-}
-
-input:focus,
-select:focus {
-  outline: none;
-  border-color: #667eea;
-}
-
-.buttons {
-  display: flex;
-  gap: 1rem;
-  justify-content: space-between;
-  margin-top: 2rem;
-}
-
-button {
-  padding: 0.75rem 2rem;
-  border: none;
-  border-radius: 6px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.next-step,
-.submit {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
-}
-
-.back-step {
-  background: #6c757d;
-  color: white;
-}
-
-.new-order {
-  background: #28a745;
-  color: white;
-}
-
-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-.cost {
-  background: #e8f5e8;
-  padding: 1rem;
-  border-radius: 8px;
-  margin: 1.5rem 0;
   text-align: center;
 }
 
-body.dark-mode .cost {
-  background: #2d4a2d;
-}
-
-.cost p {
-  font-size: 1.3rem;
-  font-weight: bold;
-  color: #2d5016;
-}
-
-body.dark-mode .cost p {
-  color: #8bc34a;
-}
-
-.service-details,
-.additional-services {
-  background: #f8f9fa;
-  padding: 1.5rem;
-  border-radius: 8px;
-  margin: 1.5rem 0;
-  border-left: 4px solid #667eea;
-}
-
-body.dark-mode .service-details,
-body.dark-mode .additional-services {
-  background: #3d3d3d;
-}
-
-.service-details h3,
-.additional-services h3 {
-  color: #667eea;
-  margin-bottom: 1rem;
-}
-
-body.dark-mode .service-details h3,
-body.dark-mode .additional-services h3 {
-  color: #8a9eff;
-}
-
-.detail-option {
-  display: block;
-  margin: 0.5rem 0;
-  padding: 0.75rem;
-  background: white;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-body.dark-mode .detail-option {
-  background: #4d4d4d;
-}
-
-.detail-option:hover {
-  background: #e9ecef;
-}
-
-body.dark-mode .detail-option:hover {
-  background: #555;
-}
-
-.summary {
-  background: #e3f2fd;
-  padding: 1.5rem;
-  border-radius: 8px;
-  margin: 1.5rem 0;
-}
-
-body.dark-mode .summary {
-  background: #2d3d4d;
-}
-
-.success {
-  text-align: center;
-  padding: 3rem 2rem;
-}
-
-.success h2 {
-  color: #28a745;
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-footer {
-  text-align: center;
-  padding: 2rem 1rem;
-  background: #343a40;
-  color: white;
-  margin-top: 2rem;
-}
-
-body.dark-mode footer {
-  background: #1a1a1a;
-}
-
-.form-group {
-  margin-bottom: 1.5rem;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-}
-
-small {
-  color: #6c757d;
-  font-size: 0.9rem;
-}
-
-body.dark-mode small {
-  color: #aaa;
-}
-
-.admin-hint {
-  margin-top: 10px;
-  font-size: 14px;
-  color: #ccc;
-}
-
-.admin-hint a {
-  color: #8a9eff;
-  text-decoration: none;
-}
-
-.admin-hint a:hover {
-  text-decoration: underline;
-}
-
-/* Стили для админки */
-.admin-container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.price-section {
-  background: white;
-  padding: 25px;
-  margin-bottom: 25px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-body.dark-mode .price-section {
-  background: #2d2d2d;
-}
-
-.price-group {
-  margin-bottom: 20px;
-}
-
-.price-group label {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.price-group span {
-  font-weight: 600;
-  color: #333;
-}
-
-body.dark-mode .price-group span {
-  color: #f0f0f0;
-}
-
-.price-group input {
+.auth-form input {
+  width: 100%;
   padding: 12px;
-  border: 2px solid #e9ecef;
-  border-radius: 6px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
   font-size: 16px;
-  width: 100%;
+  text-align: center;
 }
 
-.price-group small {
-  color: #666;
-  font-size: 0.9em;
-}
-
-body.dark-mode .price-group small {
-  color: #aaa;
-}
-
-.admin-actions {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin: 30px 0;
-}
-
-.btn-primary, .btn-secondary {
-  padding: 12px 24px;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
-}
-
-.btn-secondary {
-  background: #6c757d;
-  color: white;
-}
-
-.btn-primary:hover, .btn-secondary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-.preview {
-  background: #e8f5e8;
-  padding: 20px;
-  border-radius: 8px;
+.auth-links {
   margin-top: 20px;
 }
 
-body.dark-mode .preview {
-  background: #2d4a2d;
-}
-
-.back-link {
-  color: #667eea;
+.auth-links a {
+  color: #007bff;
   text-decoration: none;
-  font-size: 14px;
 }
 
-.back-link:hover {
+.auth-links a:hover {
   text-decoration: underline;
 }
 
+/* Стили для информации о пользователе */
+.user-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.user-info span {
+  font-weight: bold;
+  color: #333;
+}
+
+/* Адаптивность */
 @media (max-width: 768px) {
-  header h1 {
-    font-size: 2rem;
-  }
-  
-  .step {
-    padding: 1.5rem;
-  }
-  
-  .buttons {
-    flex-direction: column;
-  }
-  
-  button {
-    width: 100%;
-  }
-  
-  .header-links {
+  .user-info {
     flex-direction: column;
     gap: 10px;
-  }
-  
-  .admin-actions {
-    flex-direction: column;
-  }
-  
-  .btn-primary, .btn-secondary {
-    width: 100%;
   }
 }
