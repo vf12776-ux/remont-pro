@@ -12,7 +12,7 @@
  <link rel="manifest" href="manifest.json">
  <link rel="stylesheet" href="styles.css">
 </head>
- <body>
+<body>
   <header>   
     <h1>РемонтПро</h1>
     <p>Профессиональный ремонт квартир и офисов</p>
@@ -23,176 +23,141 @@
       <a href="admin.html" class="admin-link">⚙️ Для мастеров</a>
     </div>
   </header>
+  
   <main>
-   <div id="master-info" style="display: none; background: #e3f2fd; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center;"></div>
-   
-   <div class="progress-bar" id="progress-bar"></div>
-    <!-- Шаг 1: Тип помещения -->
-    <section id="step-1" class="step" aria-label="Выбор типа помещения">
-      <h2>Выберите тип помещения</h2>
-      <div class="options">
-        <label class="option">
-          <input type="radio" name="premise-type" value="Квартира" required>
-          <span>🏠 Квартира</span>
-        </label>
-        <label class="option">
-          <input type="radio" name="premise-type" value="Офис">
-          <span>🏢 Офис</span>
-        </label>
-        <label class="option">
-          <input type="radio" name="premise-type" value="Частный дом">
-          <span>🏡 Частный дом</span>
-        </label>
-        <label class="option">
-          <input type="radio" name="premise-type" value="Коммерческое помещение">
-          <span>🏬 Коммерческое помещение</span>
-        </label>
-      </div>
-      <label for="area">Площадь помещения (м²)</label>
-      <input type="number" id="area" name="area" min="1" required>
-      <div class="buttons">
-        <button class="next-step">Далее</button>
-      </div>
-    </section>
-
-    <!-- Шаг 2: Услуги -->
-    <section id="step-2" class="step" aria-label="Выбор услуг">
-      <h2>Выберите необходимые услуги</h2>
-      <div class="options">
-        <label class="option">
-          <input type="checkbox" name="services" value="Покраска стен" data-service="painting">
-          <span>🎨 Покраска стен</span>
-        </label>
-        <label class="option">
-          <input type="checkbox" name="services" value="Укладка пола">
-          <span>🪚 Укладка пола</span>
-        </label>
-        <label class="option">
-          <input type="checkbox" name="services" value="Сантехника">
-          <span>🚿 Сантехника</span>
-        </label>
-      </div>
-
-      <!-- Детали покраски -->
-      <div class="service-details" id="painting-details" style="display: none;">
-        <h3>🎨 Детали покраски:</h3>
-        <div class="detail-options">
-          <label class="detail-option">
-            <input type="radio" name="painting-type" value="one-layer" data-multiplier="0.8">
-            <span>В один слой (-20%)</span>
-          </label>
-          <label class="detail-option">
-            <input type="radio" name="painting-type" value="two-layers" data-multiplier="1" checked>
-            <span>В два слоя (стандарт)</span>
-          </label>
-          <label class="detail-option">
-            <input type="radio" name="painting-type" value="wallpaper" data-multiplier="1.15">
-            <span>Покраска обоев (+15%)</span>
-          </label>
+    <!-- Блок информации о мастере (оставляем, но сделаем стильным) -->
+    <div id="master-info" class="master-info-banner"></div>
+    
+    <div class="calculator-container">
+      <!-- Ваш старый интерфейс калькулятора -->
+      <div class="input-section">
+        <div class="input-group">
+          <label for="area">📐 Площадь помещения (м²)</label>
+          <input type="number" id="area" min="1" placeholder="Например: 50">
+        </div>
+        
+        <div class="input-group">
+          <label for="room-type">🏠 Тип помещения</label>
+          <select id="room-type">
+            <option value="apartment">Квартира</option>
+            <option value="office">Офис</option>
+            <option value="house">Частный дом</option>
+            <option value="commercial">Коммерческое помещение</option>
+          </select>
         </div>
       </div>
 
-      <!-- Дополнительные услуги -->
-      <div class="additional-services">
-        <h3>📦 Дополнительные услуги:</h3>
-        <div class="options">
-          <label class="option">
-            <input type="checkbox" name="additional" value="primer" data-price="50">
-            <span>🧴 Грунтовка (+50 ₽/м²)</span>
-          </label>
-          <label class="option">
-            <input type="checkbox" name="additional" value="protection" data-price="30">
-            <span>📦 Укрывание поверхностей (+30 ₽/м²)</span>
-          </label>
-          <label class="option">
-            <input type="checkbox" name="additional" value="cleaning" data-price="5000">
-            <span>🧹 Уборка после ремонта (+5000 ₽)</span>
-          </label>
-          <label class="option">
-            <input type="checkbox" name="additional" value="garbage" data-price="3000">
-            <span>🗑️ Вынос мусора (+3000 ₽)</span>
-          </label>
+      <div class="services-section">
+        <h3>🛠️ Основные услуги</h3>
+        <div class="service-category">
+          <div class="service-item">
+            <div class="service-info">
+              <input type="checkbox" id="service-painting" data-service="painting">
+              <label for="service-painting">🎨 Покраска стен</label>
+            </div>
+            <span class="service-price" id="price-painting">300 ₽/м²</span>
+          </div>
+          
+          <div class="service-item">
+            <div class="service-info">
+              <input type="checkbox" id="service-floor" data-service="floor">
+              <label for="service-floor">🪚 Укладка пола</label>
+            </div>
+            <span class="service-price" id="price-floor">800 ₽/м²</span>
+          </div>
+          
+          <div class="service-item">
+            <div class="service-info">
+              <input type="checkbox" id="service-plumbing" data-service="plumbing">
+              <label for="service-plumbing">🚿 Сантехника</label>
+            </div>
+            <span class="service-price" id="price-plumbing">15 000 ₽</span>
+          </div>
+        </div>
+
+        <h3>📦 Дополнительные услуги</h3>
+        <div class="service-category">
+          <div class="service-item">
+            <div class="service-info">
+              <input type="checkbox" id="service-primer">
+              <label for="service-primer">🧴 Грунтовка поверхностей</label>
+            </div>
+            <span class="service-price" id="price-primer">50 ₽/м²</span>
+          </div>
+          
+          <div class="service-item">
+            <div class="service-info">
+              <input type="checkbox" id="service-protection">
+              <label for="service-protection">📦 Укрывание поверхностей</label>
+            </div>
+            <span class="service-price" id="price-protection">30 ₽/м²</span>
+          </div>
+          
+          <div class="service-item">
+            <div class="service-info">
+              <input type="checkbox" id="service-cleaning">
+              <label for="service-cleaning">🧹 Уборка после ремонта</label>
+            </div>
+            <span class="service-price" id="price-cleaning">5 000 ₽</span>
+          </div>
+          
+          <div class="service-item">
+            <div class="service-info">
+              <input type="checkbox" id="service-garbage">
+              <label for="service-garbage">🗑️ Вынос мусора</label>
+            </div>
+            <span class="service-price" id="price-garbage">3 000 ₽</span>
+          </div>
         </div>
       </div>
 
-      <div class="cost">
-        <p>🧮 Предварительная стоимость: <span id="cost">0 ₽</span></p>
-        <small>*Окончательная стоимость после осмотра</small>
+      <div class="urgency-section">
+        <h3>⚡ Срочность выполнения</h3>
+        <div class="urgency-options">
+          <div class="urgency-option">
+            <input type="radio" id="urgency-normal" name="urgency" value="normal" checked>
+            <label for="urgency-normal" class="urgency-label">
+              <div class="urgency-name">Обычная</div>
+              <div class="urgency-multiplier">в течение недели</div>
+            </label>
+          </div>
+          
+          <div class="urgency-option">
+            <input type="radio" id="urgency-priority" name="urgency" value="priority">
+            <label for="urgency-priority" class="urgency-label">
+              <div class="urgency-name">Приоритетная</div>
+              <div class="urgency-multiplier">+20% к стоимости</div>
+            </label>
+          </div>
+          
+          <div class="urgency-option">
+            <input type="radio" id="urgency-urgent" name="urgency" value="urgent">
+            <label for="urgency-urgent" class="urgency-label">
+              <div class="urgency-name">Срочная</div>
+              <div class="urgency-multiplier">+50% к стоимости</div>
+            </label>
+          </div>
+        </div>
       </div>
-      <div class="buttons">
-        <button class="back-step">Назад</button>
-        <button class="next-step">Далее</button>
-      </div>
-    </section>
 
-    <!-- Шаг 3: Детали -->
-    <section id="step-3" class="step" aria-label="Детали заказа">
-      <h2>Детали заказа</h2>
-      <div class="form-group">
-        <label>Срочность выполнения</label>
-        <label><input type="radio" name="urgency" value="normal" checked> Обычная (в течение недели)</label>
-        <label><input type="radio" name="urgency" value="priority"> Приоритетная (+20%)</label>
-        <label><input type="radio" name="urgency" value="urgent"> Срочная (+50%)</label>
-      </div>
-      <div class="form-group">
-        <label for="date">📅 Предпочтительная дата</label>
-        <input type="date" id="date" name="date" required>
-      </div>
-      <div class="form-group">
-        <label for="time">🕐 Удобное время</label>
-        <select id="time" name="time" required>
-          <option value="" disabled selected>Выберите время</option>
-          <option value="Утром">Утром (9:00-12:00)</option>
-          <option value="Днем">Днем (12:00-15:00)</option>
-          <option value="Вечером">Вечером (15:00-18:00)</option>
-        </select>
-      </div>
-      <div class="buttons">
-        <button class="back-step">Назад</button>
-        <button class="next-step">Далее</button>
-      </div>
-    </section>
+      <button id="calculate-btn" class="btn-primary calculate-btn">
+        🧮 Рассчитать стоимость
+      </button>
 
-    <!-- Шаг 4: Контакты -->
-    <section id="step-4" class="step" aria-label="Контактная информация">
-      <h2>Контактная информация</h2>
-      <div class="form-group">
-        <label for="name">Ваше имя</label>
-        <input type="text" id="name" name="name" required>
+      <div class="results-section" id="results-section" style="display: none;">
+        <h2>💰 Итоговая стоимость</h2>
+        <div class="total-price" id="total-price">0 ₽</div>
+        <div class="price-breakdown" id="price-breakdown">
+          <!-- Детали расчета появятся здесь -->
+        </div>
       </div>
-      <div class="form-group">
-        <label for="phone">📞 Номер телефона</label>
-        <input type="tel" id="phone" name="phone" required>
-      </div>
-      <div class="form-group">
-        <label for="email">📧 Email (необязательно)</label>
-        <input type="email" id="email" name="email">
-      </div>
-      <div class="summary">
-        <h3>Сводка заказа</h3>
-        <div id="summary-content"></div>
-        <p>Итого: <span id="final-cost">0 ₽</span></p>
-      </div>
-      <div class="buttons">
-        <button class="back-step">Назад</button>
-        <button class="submit">Оформить заказ</button>
-      </div>
-    </section>
-
-    <!-- Шаг 5: Подтверждение -->
-    <section id="step-5" class="step" aria-label="Подтверждение заказа">
-      <div class="success">
-        <h2>✓ Заказ успешно оформлен!</h2>
-        <p>Спасибо за обращение! Наш менеджер свяжется с вами в течение 30 минут.</p>
-        <p>Ваш заказ №<span id="order-number">1234</span></p>
-        <button class="new-order">Оформить новый заказ</button>
-      </div>
-    </section>
+    </div>
   </main>
+
   <footer>
-    <p>⭐⭐⭐⭐⭐ 4.9 (2,847 отзывов)</p>
-    <p class="admin-hint">Мастер? <a href="admin.html">Настройте цены здесь</a></p>
+    <p>💡 Мастер? <a href="admin.html">Настройте ваши цены здесь</a></p>
   </footer>
+
   <script src="script.js"></script>
 </body>
 </html>
