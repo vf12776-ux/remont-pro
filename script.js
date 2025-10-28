@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', function() {
   // Инициализация
   updateMasterInfo();
@@ -35,13 +34,16 @@ function loadPricesForCalculation() {
     }
   }
   
-  // Стандартные цены
+  // Стандартные цены с новыми услугами
   return {
     prices: {
       base: 1500,
       painting: 300,
       floor: 800,
       plumbing: 15000,
+      plaster: 400,      // НОВАЯ УСЛУГА
+      putty: 250,        // НОВАЯ УСЛУГА
+      demolition: 350,   // НОВАЯ УСЛУГА
       primer: 50,
       protection: 30,
       cleaning: 5000,
@@ -58,10 +60,10 @@ function updateMasterInfo() {
   
   const { masterName } = loadPricesForCalculation();
   if (masterName) {
-    masterInfo.textContent = `Расчет по ценам мастера: ${masterName}`;
+    masterInfo.textContent = `Цены мастера: ${masterName}`;
     masterInfo.style.display = 'block';
   } else {
-    masterInfo.textContent = 'Расчет по стандартным ценам';
+    masterInfo.textContent = 'Стандартные цены';
     masterInfo.style.display = 'block';
   }
 }
@@ -70,27 +72,25 @@ function updatePriceDisplay() {
   const { prices } = loadPricesForCalculation();
   
   // Обновляем отображение цен в интерфейсе
-  if (document.getElementById('price-painting')) {
-    document.getElementById('price-painting').textContent = `${prices.painting} ₽/м²`;
-  }
-  if (document.getElementById('price-floor')) {
-    document.getElementById('price-floor').textContent = `${prices.floor} ₽/м²`;
-  }
-  if (document.getElementById('price-plumbing')) {
-    document.getElementById('price-plumbing').textContent = `${prices.plumbing.toLocaleString()} ₽`;
-  }
-  if (document.getElementById('price-primer')) {
-    document.getElementById('price-primer').textContent = `${prices.primer} ₽/м²`;
-  }
-  if (document.getElementById('price-protection')) {
-    document.getElementById('price-protection').textContent = `${prices.protection} ₽/м²`;
-  }
-  if (document.getElementById('price-cleaning')) {
-    document.getElementById('price-cleaning').textContent = `${prices.cleaning.toLocaleString()} ₽`;
-  }
-  if (document.getElementById('price-garbage')) {
-    document.getElementById('price-garbage').textContent = `${prices.garbage.toLocaleString()} ₽`;
-  }
+  const priceElements = {
+    'price-painting': `${prices.painting} ₽/м²`,
+    'price-floor': `${prices.floor} ₽/м²`,
+    'price-plumbing': `${prices.plumbing.toLocaleString()} ₽`,
+    'price-plaster': `${prices.plaster} ₽/м²`,      // НОВАЯ УСЛУГА
+    'price-putty': `${prices.putty} ₽/м²`,          // НОВАЯ УСЛУГА
+    'price-demolition': `${prices.demolition} ₽/м²`, // НОВАЯ УСЛУГА
+    'price-primer': `${prices.primer} ₽/м²`,
+    'price-protection': `${prices.protection} ₽/м²`,
+    'price-cleaning': `${prices.cleaning.toLocaleString()} ₽`,
+    'price-garbage': `${prices.garbage.toLocaleString()} ₽`
+  };
+  
+  Object.entries(priceElements).forEach(([id, text]) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.textContent = text;
+    }
+  });
 }
 
 // ===== РАСЧЕТ СТОИМОСТИ =====
@@ -103,7 +103,6 @@ function calculateTotal() {
   }
   
   const { prices, multipliers } = loadPricesForCalculation();
-  const roomType = document.getElementById('room-type').value;
   
   let total = 0;
   let breakdown = [];
@@ -114,45 +113,46 @@ function calculateTotal() {
   breakdown.push({ name: 'Базовая стоимость ремонта', cost: baseCost });
   
   // Основные услуги
-  if (document.getElementById('service-painting') && document.getElementById('service-painting').checked) {
-    const paintingCost = area * prices.painting;
-    total += paintingCost;
-    breakdown.push({ name: 'Покраска стен', cost: paintingCost });
-  }
+  const services = [
+    { id: 'service-painting', name: 'Покраска стен', price: prices.painting, unit: 'м²' },
+    { id: 'service-floor', name: 'Укладка пола', price: prices.floor, unit: 'м²' },
+    { id: 'service-plumbing', name: 'Сантехнические работы', price: prices.plumbing, unit: 'фикс' },
+    { id: 'service-plaster', name: 'Штукатурка стен', price: prices.plaster, unit: 'м²' },      // НОВАЯ УСЛУГА
+    { id: 'service-putty', name: 'Шпаклевка стен', price: prices.putty, unit: 'м²' },          // НОВАЯ УСЛУГА
+    { id: 'service-demolition', name: 'Демонтаж', price: prices.demolition, unit: 'м²' }       // НОВАЯ УСЛУГА
+  ];
   
-  if (document.getElementById('service-floor') && document.getElementById('service-floor').checked) {
-    const floorCost = area * prices.floor;
-    total += floorCost;
-    breakdown.push({ name: 'Укладка пола', cost: floorCost });
-  }
-  
-  if (document.getElementById('service-plumbing') && document.getElementById('service-plumbing').checked) {
-    total += prices.plumbing;
-    breakdown.push({ name: 'Сантехнические работы', cost: prices.plumbing });
-  }
+  services.forEach(service => {
+    const element = document.getElementById(service.id);
+    if (element && element.checked) {
+      let cost = service.unit === 'м²' ? area * service.price : service.price;
+      total += cost;
+      breakdown.push({ 
+        name: service.name, 
+        cost: cost 
+      });
+    }
+  });
   
   // Дополнительные услуги
-  if (document.getElementById('service-primer') && document.getElementById('service-primer').checked) {
-    const primerCost = area * prices.primer;
-    total += primerCost;
-    breakdown.push({ name: 'Грунтовка поверхностей', cost: primerCost });
-  }
+  const additionalServices = [
+    { id: 'service-primer', name: 'Грунтовка поверхностей', price: prices.primer, unit: 'м²' },
+    { id: 'service-protection', name: 'Укрывание поверхностей', price: prices.protection, unit: 'м²' },
+    { id: 'service-cleaning', name: 'Уборка после ремонта', price: prices.cleaning, unit: 'фикс' },
+    { id: 'service-garbage', name: 'Вынос мусора', price: prices.garbage, unit: 'фикс' }
+  ];
   
-  if (document.getElementById('service-protection') && document.getElementById('service-protection').checked) {
-    const protectionCost = area * prices.protection;
-    total += protectionCost;
-    breakdown.push({ name: 'Укрывание поверхностей', cost: protectionCost });
-  }
-  
-  if (document.getElementById('service-cleaning') && document.getElementById('service-cleaning').checked) {
-    total += prices.cleaning;
-    breakdown.push({ name: 'Уборка после ремонта', cost: prices.cleaning });
-  }
-  
-  if (document.getElementById('service-garbage') && document.getElementById('service-garbage').checked) {
-    total += prices.garbage;
-    breakdown.push({ name: 'Вынос мусора', cost: prices.garbage });
-  }
+  additionalServices.forEach(service => {
+    const element = document.getElementById(service.id);
+    if (element && element.checked) {
+      let cost = service.unit === 'м²' ? area * service.price : service.price;
+      total += cost;
+      breakdown.push({ 
+        name: service.name, 
+        cost: cost 
+      });
+    }
+  });
   
   // Срочность
   const urgencyElement = document.querySelector('input[name="urgency"]:checked');
@@ -206,6 +206,10 @@ function displayResults(total, breakdown) {
   
   if (resultsSection) {
     resultsSection.style.display = 'block';
+    // Плавная прокрутка к результатам
+    setTimeout(() => {
+      resultsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 100);
   }
 }
 
