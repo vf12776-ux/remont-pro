@@ -1,22 +1,24 @@
 {
-  "name": "РемонтПро",
+  "name": "Ремонт Про",
   "short_name": "РемонтПро",
-  "description": "Профессиональный расчет стоимости ремонта",
-  "start_url": "/",
+  "description": "Приложение для расчета стоимости ремонта",
+  "start_url": "./",  // ← ТОЧКА!
+  "scope": "./",      // ← ДОБАВЬ ЭТУ СТРОКУ
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#6366f1",
-  "orientation": "portrait-primary",
+  "theme_color": "#4CAF50",
   "icons": [
     {
-      "src": "favicon.png",
+      "src": "icon-192x192.png",  // ← БЕЗ /remont-pro/
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "favicon.png",
+      "src": "icon-512x512.png",  // ← БЕЗ /remont-pro/
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
