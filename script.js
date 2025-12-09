@@ -224,3 +224,14 @@ function debounce(func, wait) {
     timeout = setTimeout(later, wait);
   };
 }
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('sw.js')
+      .then(function(reg) {
+        console.log('✅ Service Worker зарегистрирован для:', reg.scope);
+      })
+      .catch(function(err) {
+        console.log('❌ Ошибка Service Worker:', err);
+      });
+  });
+}
